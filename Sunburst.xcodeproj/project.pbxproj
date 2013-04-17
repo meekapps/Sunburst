@@ -22,6 +22,7 @@
 		4104E69516D5475100153791 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4104E69416D5475100153791 /* Default-568h@2x.png */; };
 		4104E69F16D5492A00153791 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4104E69E16D5492A00153791 /* Icon.png */; };
 		4104E6A116D5492D00153791 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4104E6A016D5492D00153791 /* Icon@2x.png */; };
+		4105070F171DE396002AFE59 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4105070E171DE396002AFE59 /* CoreImage.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		4104E69416D5475100153791 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		4104E69E16D5492A00153791 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
 		4104E6A016D5492D00153791 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "../Icon@2x.png"; sourceTree = "<group>"; };
+		4105070E171DE396002AFE59 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4105070F171DE396002AFE59 /* CoreImage.framework in Frameworks */,
 				4104E69016D528F200153791 /* QuartzCore.framework in Frameworks */,
 				4104E66D16D528D600153791 /* UIKit.framework in Frameworks */,
 				4104E66F16D528D600153791 /* Foundation.framework in Frameworks */,
@@ -83,6 +86,7 @@
 		4104E66B16D528D600153791 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4105070E171DE396002AFE59 /* CoreImage.framework */,
 				4104E68F16D528F200153791 /* QuartzCore.framework */,
 				4104E66C16D528D600153791 /* UIKit.framework */,
 				4104E66E16D528D600153791 /* Foundation.framework */,

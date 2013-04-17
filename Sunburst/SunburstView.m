@@ -11,17 +11,65 @@
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
+#pragma mark - Mask View
+@implementation MaskView
+
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code
+        self.backgroundColor = [UIColor clearColor];
+    }
+    return self;
+}
+
+
+- (void)drawRect:(CGRect)rect {
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    size_t gradLocationsNum = 2;
+    CGFloat gradLocations[2] = {0.0f, 1.0f};
+    CGFloat gradColors[8] = {0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, gradColors, gradLocations, gradLocationsNum);
+    CGColorSpaceRelease(colorSpace);
+    
+    CGPoint gradCenter= CGPointMake(self.bounds.size.width/2, self.bounds.size.height/2);
+    float gradRadius = MIN(self.bounds.size.width/2.0f, self.bounds.size.height/2.0f) ;
+    
+    CGContextDrawRadialGradient (context, gradient, gradCenter, 0, gradCenter, gradRadius, kCGGradientDrawsAfterEndLocation);
+    
+    CGGradientRelease(gradient);
+}
+
+@end
+
+
+
+#pragma mark - Sunburst View
+
 @implementation SunburstView
 
-@synthesize beams, strokeColor, fillColor;
+@synthesize beams, strokeColor, fillColor, fadeEdges;
 
-- (id)initWithFrame:(CGRect)frame beams:(NSInteger)theBeams fillColor:(UIColor*)theFillColor strokeColor:(UIColor*)theStrokeColor {
+- (id)initWithFrame:(CGRect)frame beams:(NSInteger)theBeams fillColor:(UIColor*)theFillColor strokeColor:(UIColor*)theStrokeColor fadeEdges:(BOOL)theFadeEdges {
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         self.beams = theBeams;
         self.fillColor = theFillColor;
         self.strokeColor = theStrokeColor;
+        self.fadeEdges = theFadeEdges;
+        
+        if (self.fadeEdges) {
+            MaskView *maskView = [[MaskView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height)];
+            UIImage *_maskingImage = [self imageWithView:maskView];
+            CALayer *_maskingLayer = [CALayer layer];
+            _maskingLayer.frame = CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height);
+            [_maskingLayer setContents:(id)[_maskingImage CGImage]];
+            [self.layer setMask:_maskingLayer];
+            
+        }
     }
     
     return self;
@@ -33,8 +81,17 @@
     return self;
 }
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
+- (UIImage *) imageWithView:(UIView *)view {
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, 0.0);
+    [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    
+    UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return img;
+}
+
 - (void)drawRect:(CGRect)rect {
     CGFloat radius = rect.size.width/2.0f;
     
@@ -64,7 +121,6 @@
         [bezierPath addLineToPoint:thisPoint];
         [bezierPath addLineToPoint:centerPoint];
         thisAngle += sliceDegrees;
-        
     }
     
     [bezierPath closePath];
@@ -101,6 +157,8 @@
                                           }];
                      }];
 }
+
+#pragma mark - Finishing Up
 
 - (void) dealloc {
     self.fillColor = nil;

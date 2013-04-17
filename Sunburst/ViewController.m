@@ -22,10 +22,9 @@
     
     UIColor *fillColor = [UIColor colorWithRed:250.0f/255.0f green:250.0f/255.0f blue:184.0f/255.0f alpha:0.5f];
     UIColor *strokeColor = [UIColor clearColor];
-    SunburstView *sunburst = [[SunburstView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 700.0f, 700.0f) beams:18 fillColor:fillColor strokeColor:strokeColor];
+    SunburstView *sunburst = [[SunburstView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 300.0f, 300.0f) beams:18 fillColor:fillColor strokeColor:strokeColor fadeEdges:YES];
     sunburst.layer.position = self.view.layer.position;
     [self.view addSubview:sunburst];
-    
     [sunburst rotateWithDuration:60.0f clockwise:YES repeats:YES];
 }
 
