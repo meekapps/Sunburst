@@ -24,5 +24,6 @@
 
 - (id)initWithFrame:(CGRect)frame beams:(NSInteger)theBeams fillColor:(UIColor*)theFillColor strokeColor:(UIColor*)theStrokeColor fadeEdges:(BOOL)fadeEdges;
 - (void) rotateWithDuration:(CGFloat)duration clockwise:(BOOL)clockwise repeats:(BOOL)repeats;
+- (void) stopRotation;
 
 @end

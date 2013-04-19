@@ -11,13 +11,12 @@
 
 #define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
-#pragma mark - Mask View
+#pragma mark - Mask
 @implementation MaskView
 
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
         self.backgroundColor = [UIColor clearColor];
     }
     return self;
@@ -44,9 +43,7 @@
 
 @end
 
-
-
-#pragma mark - Sunburst View
+#pragma mark - Sunburst
 
 @implementation SunburstView
 
@@ -100,13 +97,13 @@
     
     UIBezierPath *bezierPath = [UIBezierPath bezierPath];
     CGPoint centerPoint = CGPointMake(rect.origin.x + radius, rect.origin.y + radius);
-
-    CGPoint thisPoint = CGPointMake(centerPoint.x + radius, centerPoint.y);
+    
     [bezierPath moveToPoint:centerPoint];
     
     CGFloat thisAngle = 0.0f;
     CGFloat sliceDegrees = 360.0f / self.beams / 2.0f;
     
+    CGPoint thisPoint;
     for (int i = 0; i < self.beams; i++) {
         
         CGFloat x = radius * cosf(DEGREES_TO_RADIANS(thisAngle + sliceDegrees)) + centerPoint.x;
@@ -128,8 +125,9 @@
     bezierPath.lineWidth = 1;
     [bezierPath fill];
     [bezierPath stroke];
-
+    
 }
+
 
 - (void) rotateWithDuration:(CGFloat)duration clockwise:(BOOL)clockwise repeats:(BOOL)repeats {
     CGFloat direction;
@@ -142,13 +140,15 @@
                      animations:^{
                          self.layer.transform = CATransform3DMakeRotation(DEGREES_TO_RADIANS(179.999f * direction), 0.0f, 0.0f, 1.0f);
                      } completion:^(BOOL finished) {
+                         if (!finished) return;
                          self.layer.transform = CATransform3DMakeRotation(DEGREES_TO_RADIANS(180.0f * direction), 0.0f, 0.0f, 1.0f);
                          [UIView animateWithDuration:duration/2.0f
                                                delay:0.0f
                                              options:UIViewAnimationOptionCurveLinear
                                           animations:^{
-                                             self.layer.transform = CATransform3DMakeRotation(DEGREES_TO_RADIANS(359.999f * direction), 0.0f, 0.0f, 1.0f);
+                                              self.layer.transform = CATransform3DMakeRotation(DEGREES_TO_RADIANS(359.999f * direction), 0.0f, 0.0f, 1.0f);
                                           } completion:^(BOOL finished) {
+                                              if (!finished) return;
                                               self.layer.transform = CATransform3DIdentity;
                                               
                                               if (repeats) {
@@ -158,7 +158,9 @@
                      }];
 }
 
-#pragma mark - Finishing Up
+- (void) stopRotation {
+    [self.layer removeAllAnimations];
+}
 
 - (void) dealloc {
     self.fillColor = nil;
